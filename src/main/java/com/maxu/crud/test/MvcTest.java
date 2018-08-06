@@ -27,7 +27,7 @@ import com.maxu.crud.bean.Employee;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = {"classpath:applicationContext.xml",
-    "file:src/main/webapp/WEB-INF/dispatcherSevlet-servlet.xml"})
+    "file:/src/main/webapp/WEB-INF/dispatcherServlet-servlet.xml"})
 public class MvcTest {
   // 传入springmvc的ioc
   @Autowired
@@ -60,7 +60,7 @@ public class MvcTest {
     //获取员工数据
     List<Employee> list = pi.getList();
     for (Employee e:list) {
-      System.out.println("Id:"+e.getEmpId()+" name:"+e.getEmName()+" email"+e.getEmail());
+      System.out.println("Id:"+e.getEmpId()+" name:"+e.getEmName()+" email"+e.getEmail()+" departmentName:"+e.getDepartment().getDeptName());
     }
   }
 

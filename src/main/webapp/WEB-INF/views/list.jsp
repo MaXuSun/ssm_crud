@@ -70,7 +70,7 @@
 									修改 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 								</button>
 								<button type="button" class="btn btn-danger btn-sm">
-									删除 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+									删除 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 								</button>
 							</th>
 						</tr>

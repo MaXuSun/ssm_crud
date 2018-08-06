@@ -1,5 +1,7 @@
 package com.maxu.crud.test;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +34,7 @@ public class MapperTest {
   @Test
   public void testCRUD() {
 
-    System.out.println(departmentMapper);
+    //System.out.println(departmentMapper);
 
     // 1.插入删除部门
     // departmentMapper.insertSelective(new Department(1,"开发部"));
@@ -43,9 +45,14 @@ public class MapperTest {
     // Employee(1,"Jerry","M","Jerry@maxu.com",1));
     // 3.批量插入多个员工名；使用可以执行批量操作的SqlSession
 
-     EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
-     for (int i = 2; i < 1000; i++) {
-     mapper.insertSelective(new Employee(null, i+"", "M", i+"@qq.com",1));
-     }
+     //EmployeeMapper mapper = session.getMapper(EmployeeMapper.class);
+     //for (int i = 2; i < 1000; i++) {
+     //mapper.insertSelective(new Employee(null, i+"", "M", i+"@qq.com",1));
+     //}
+    List<Employee> employees = employeeMapper.selectByExampleWithDept(null);
+    for (Employee e:employees) {
+      System.out.println(e);
+    }
+    
   }
 }
