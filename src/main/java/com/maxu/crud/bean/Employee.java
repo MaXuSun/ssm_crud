@@ -1,87 +1,89 @@
 package com.maxu.crud.bean;
 
+import javax.validation.constraints.Pattern;
+
 public class Employee {
-    private Integer empId;
+  private Integer empId;
 
-    private String emName;
+  @Pattern(regexp = "(^[A-Za-z0-9]{6,16}$)|(^[\\u2E80-\\u9FFF]{2,5}$)", message = "用户名必须是2-5位中文或者6-16位英文和数字组合")
+  private String emName;
 
-    private String gender;
+  private String gender;
 
-    private String email;
+  // @Email
+  @Pattern(regexp = "^([a-z0-9_\\.-]+)@([\\da-z\\.-]+)\\.([a-z\\.]{2,6})$", message = "邮箱格式不正确")
+  private String email;
 
-    private Integer dId;
-    
-    //希望查询员工的同时，部门信息也是查询好的
-    private Department department;
+  private Integer dId;
 
-    
-    
-    public Employee() {
-    }
+  // 希望查询员工的同时，部门信息也是查询好的
+  private Department department;
 
-    public Employee(Integer empId, String emName, String gender, String email,
-        Integer dId) {
-      this.empId = empId;
-      this.emName = emName;
-      this.gender = gender;
-      this.email = email;
-      this.dId = dId;
-    }
+  public Employee() {
+  }
 
-    public Integer getEmpId() {
-        return empId;
-    }
+  public Employee(Integer empId, String emName, String gender, String email,
+      Integer dId) {
+    this.empId = empId;
+    this.emName = emName;
+    this.gender = gender;
+    this.email = email;
+    this.dId = dId;
+  }
 
-    public void setEmpId(Integer empId) {
-        this.empId = empId;
-    }
+  public Integer getEmpId() {
+    return empId;
+  }
 
-    public String getEmName() {
-        return emName;
-    }
+  public void setEmpId(Integer empId) {
+    this.empId = empId;
+  }
 
-    public void setEmName(String emName) {
-        this.emName = emName == null ? null : emName.trim();
-    }
+  public String getEmName() {
+    return emName;
+  }
 
-    public String getGender() {
-        return gender;
-    }
+  public void setEmName(String emName) {
+    this.emName = emName == null ? null : emName.trim();
+  }
 
-    public void setGender(String gender) {
-        this.gender = gender == null ? null : gender.trim();
-    }
+  public String getGender() {
+    return gender;
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  public void setGender(String gender) {
+    this.gender = gender == null ? null : gender.trim();
+  }
 
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
-    }
+  public String getEmail() {
+    return email;
+  }
 
-    public Integer getdId() {
-        return dId;
-    }
+  public void setEmail(String email) {
+    this.email = email == null ? null : email.trim();
+  }
 
-    public void setdId(Integer dId) {
-        this.dId = dId;
-    }
+  public Integer getdId() {
+    return dId;
+  }
 
-    public Department getDepartment() {
-      return department;
-    }
+  public void setdId(Integer dId) {
+    this.dId = dId;
+  }
 
-    public void setDepartment(Department department) {
-      this.department = department;
-    }
+  public Department getDepartment() {
+    return department;
+  }
 
-    @Override
-    public String toString() {
-      return "Employee [empId=" + empId + ", emName=" + emName + ", gender="
-          + gender + ", email=" + email + ", dId=" + dId + ", department="
-          + department + "]";
-    }
-    
-    
+  public void setDepartment(Department department) {
+    this.department = department;
+  }
+
+  @Override
+  public String toString() {
+    return "Employee [empId=" + empId + ", emName=" + emName + ", gender="
+        + gender + ", email=" + email + ", dId=" + dId + ", department="
+        + department + "]";
+  }
+
 }

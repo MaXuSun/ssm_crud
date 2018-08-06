@@ -115,7 +115,9 @@
 			<version>2.8.8</version>
 		</dependency>
 
-		<!-- JSR303校验包 -->
+		<!-- JSR303数据校验包 tomcat7及以上服务器直接导入该包就行
+		tomcat7一下的服务器，el表达式，额外给服务器的lib包中替换新的标准的el
+		-->
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
