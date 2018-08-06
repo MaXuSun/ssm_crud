@@ -26,6 +26,73 @@
 </head>
 <body>
 
+	<!-- 员工修改的模态框 -->
+	<div class="modal fade" id="empUpdateModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">员工修改</h4>
+				</div>
+				<div class="modal-body">
+
+					<!-- 模态框中添加表单 -->
+					<form class="form-horizontal">
+						<!-- 表单中第一项 姓名 -->
+						<div class="form-group">
+							<label class="col-sm-2 control-label">empName</label>
+							<div class="col-sm-10">
+								<p class="form-control-static" id="empName_update_static"></p>
+								<span id="helpBlock2" class="help-block"></span>
+							</div>
+						</div>
+						<!-- 表单中第二项 邮件 -->
+						<div class="form-group">
+							<label class="col-sm-2 control-label">email</label>
+							<div class="col-sm-10">
+								<input type="text" name="email" class="form-control"
+									id="email_update_input" placeholder="email@gmail.com">
+								<span id="helpBlock2" class="help-block"></span>
+							</div>
+						</div>
+						<!-- 表单中第三项性别 -->
+						<div class="form-group">
+							<label class="col-sm-2 control-label">gender</label>
+							<div class="col-sm-10">
+								<label class="radio-inline"> <input type="radio"
+									name="gender" id="gender1_update_input" value="M"
+									checked="checked"> 男
+								</label> <label class="radio-inline"> <input type="radio"
+									name="gender" id="gender2_update_input" value="F"> 女
+								</label>
+							</div>
+						</div>
+						<!-- 表单中第4项 部门 -->
+						<div class="form-group">
+							<label class="col-sm-2 control-label">deptName</label>
+							<div class="col-sm-4">
+								<!-- 部门提交部门ID即可 ，不写死，部门选择用js控制-->
+								<select class="form-control" name="dId">
+								</select>
+							</div>
+						</div>
+
+					</form>
+					<!-- 关闭，保存按钮 -->
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="emp_update_btn">更新</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 	<!-- 员工添加的模态框 bootstrap的水平模态框 -->
 	<div class="modal fade" id="empAddModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel">
@@ -77,7 +144,7 @@
 							<label class="col-sm-2 control-label">deptName</label>
 							<div class="col-sm-4">
 								<!-- 部门提交部门ID即可 ，不写死，部门选择用js控制-->
-								<select class="form-control" name="dId" id="dept_add_select">
+								<select class="form-control" name="dId">
 								</select>
 							</div>
 						</div>
@@ -204,11 +271,13 @@
 								</button>
 				 */
 				var editBtn = $("<button></button>").addClass(
-						"btn btn-primary btn-sm").append(
+						"btn btn-primary btn-sm edit_btn").append(
 						$("<span></span>").addClass(
 								"glyphicon glyphicon-pencil")).append("编辑");
+				 //为编辑按钮添加一个自定义按钮，标识当前员工属性
+				 editBtn.attr("edit-id",item.empId);
 				var delBtn = $("<button></button>").addClass(
-						"btn btn-danger btn-sm").append(
+						"btn btn-danger btn-sm delete_btn").append(
 						$("<span></span>")
 								.addClass("glyphicon glyphicon-trash")).append(
 						"删除");
@@ -220,7 +289,7 @@
 						btnTd).appendTo("#emps_table tbody");
 			});
 		}
-		
+
 		//解析显示分页信息
 		function build_page_info(result) {
 			//同样清空前面的
@@ -232,7 +301,7 @@
 							+ result.extend.pageInfo.total + "条记录");
 			totalRecorder = result.extend.pageInfo.total;
 		}
-		
+
 		//解析显示分页条，点击分页要能去下一页
 		function build_page_nav(result) {
 			//同样清空前面的
@@ -278,7 +347,7 @@
 			}
 			//添加首页和前一页
 			ul.append(firstPageLi).append(prePageLi);
-			
+
 			//1,2,3……遍历给ul中添加页码
 			$.each(result.extend.pageInfo.navigatepageNums, function(index,
 					item) {
@@ -291,7 +360,7 @@
 				});
 				ul.append(numLi);
 			});
-			
+
 			//添加下一页和末页提示
 			ul.append(nextPageLi).append(lastPageLi);
 
@@ -313,7 +382,7 @@
 			reset_form("#empAddModal form");
 			//$("#empAddModal form")[0].reset();
 			//发送ajax请求，查出部门信息，显示在下拉列表中
-			getDepts();
+			getDepts("#empAddModal select");
 			//弹出模态框
 			$("#empAddModal").modal({
 				backdrop : 'static'
@@ -321,7 +390,9 @@
 		});
 
 		//查出所有部门信息并显示在下拉列表
-		function getDepts() {
+		function getDepts(ele) {
+			//清空之前下拉列表的值
+			$(ele).empty();
 			$.ajax({
 				url : "${APP_PATH}/depts",
 				type : "get",
@@ -335,7 +406,7 @@
 					$.each(result.extend.depts, function() {
 						var optionEle = $("<option></option>").append(
 								this.deptName).attr("value", this.deptId);
-						optionEle.appendTo("#dept_add_select");
+						optionEle.appendTo(ele);
 					});
 				}
 			});
@@ -425,52 +496,91 @@
 				});
 
 		//点击保存按钮保存员工
-		$("#emp_save_btn").click(function() {
-			//1.模态框中填写的表单数据提交给服务器进行保存
-			//1.先对要提交给服务器的数据进行校验,判断是否符合格式
-			if (!validate_add_form()) {
-				return false;
-			}
-			//2.对输入的名字进行校验，判断姓名是否已经存在，在上面对用户名进行是否重复时，如果重复给
-			//保存按钮添加一个自定义属性，然后这里判断是否有这个属性来判断保存按钮是否可用
-			if ($(this).attr("ajax-va") == "error") {
-				return false;
-			}
+		$("#emp_save_btn")
+				.click(
+						function() {
+							//1.模态框中填写的表单数据提交给服务器进行保存
+							//1.先对要提交给服务器的数据进行校验,判断是否符合格式
+							if (!validate_add_form()) {
+								return false;
+							}
+							//2.对输入的名字进行校验，判断姓名是否已经存在，在上面对用户名进行是否重复时，如果重复给
+							//保存按钮添加一个自定义属性，然后这里判断是否有这个属性来判断保存按钮是否可用
+							if ($(this).attr("ajax-va") == "error") {
+								return false;
+							}
 
-			//2.发送ajax请求保存员工
+							//2.发送ajax请求保存员工
+							$
+									.ajax({
+										url : "${APP_PATH}/emp",
+										type : "POST",
+										data : $("#empAddModal form")
+												.serialize(),
+										success : function(result) {
+											//alert(result.msg);
+											//后台校验传回的数据
+											if (result.code == 100) {
+												//员工保存成功
+												//1.关闭模态框
+												$("#empAddModal").modal("hide");
+												//2.来到最后一页，显示刚才保存的数据
+												//发送ajax请求显示最后一页数据即可
+												//使用pageHelper的特点，当请求的页数大于最大页数时，返回最大页数
+												//totalRecorder全局变量记录总条数一定大于最大页数
+												to_page(totalRecorder);
+											} else {
+												//显示失败信息
+												//console.log(result);
+												//有哪个字段的错误信息就显示哪个字段的
+												if (undefined != result.extend.errorFields.email) {
+													//显示邮箱错误信息
+													show_validate_msg(
+															"#email_add_input",
+															"error",
+															result.extend.errorFields.email);
+												}
+												if (undefined != result.extend.errorFields.emName) {
+													//显示员工名字错误信息
+													show_validate_msg(
+															"#empName_add_input",
+															"error",
+															result.extend.errorFields.emName);
+												}
+											}
+
+										}
+									});
+						});
+		//1.我们是按钮创建之前就绑定了click，所以绑定不上
+		//1>,可以在创建按钮的时候绑定    2>,绑定点击.live
+		//jquery新版本没有live方法，使用on方法替代,直接用on不行，on绑在后代上
+		$(document).on("click", ".edit_btn", function() {
+			
+			//1.查出部门信息，显示部门列表
+			getDepts("#empUpdateModal select");
+			//2.查出员工信息，显示员工信息
+			getEmp($(this).attr("edit-id"));
+			$("#empUpdateModal").modal({
+				backdrop : 'static'
+			});
+
+		});
+		function getEmp(id){
 			$.ajax({
-				url : "${APP_PATH}/emp",
-				type : "POST",
-				data : $("#empAddModal form").serialize(),
-				success : function(result) {
-					//alert(result.msg);
-					//后台校验传回的数据
-					if (result.code == 100) {
-						//员工保存成功
-						//1.关闭模态框
-						$("#empAddModal").modal("hide");
-						//2.来到最后一页，显示刚才保存的数据
-						//发送ajax请求显示最后一页数据即可
-						//使用pageHelper的特点，当请求的页数大于最大页数时，返回最大页数
-						//totalRecorder全局变量记录总条数一定大于最大页数
-						to_page(totalRecorder);
-					} else {
-						//显示失败信息
-						//console.log(result);
-						//有哪个字段的错误信息就显示哪个字段的
-						if(undefined != result.extend.errorFields.email){
-							//显示邮箱错误信息
-							show_validate_msg("#email_add_input","error",result.extend.errorFields.email);
-						}
-						if(undefined != result.extend.errorFields.emName){
-							//显示员工名字错误信息
-							show_validate_msg("#empName_add_input","error",result.extend.errorFields.emName);
-						}
-					}
-
+				url:"${APP_PATH}/emp/"+id,
+				type:"GET",
+				success:function(result){
+					console.log(result);
+					var empData = result.extend.emp;
+					$("#empName_update_static").text(empData.emName);
+					$("#email_update_input").val(empData.email);
+					$("#empUpdateModal input[name=gender]").val([empData.gender]);
+					$("#empUpdateModal select").val([empData.dId]);
+					
 				}
 			});
-		});
+		}
 	</script>
 </body>
 </html>
