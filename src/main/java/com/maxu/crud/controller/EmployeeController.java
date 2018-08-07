@@ -1,5 +1,6 @@
 package com.maxu.crud.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,74 @@ public class EmployeeController {
   EmployeeService employeeService;
   
   
+  /**
+   * 单个 批量删除二合一
+   * 批量中用-连接
+   * @param id
+   * @return
+   */
+  @RequestMapping(value="/emp/{ids}",method=RequestMethod.DELETE)
+  @ResponseBody
+  public Msg deleteEmp(@PathVariable("ids")String ids) {
+    //批量删除
+    if(ids.contains("-")) {
+      List<Integer> delIds = new ArrayList<Integer>();
+      String[] strIds = ids.split("-");
+      //组装id的集合
+      for(String string:strIds) {
+        delIds.add(Integer.parseInt(string));
+      }
+      employeeService.deleteBatch(delIds);
+    }else {
+      //单个删除
+      employeeService.deleteEmp(Integer.parseInt(ids));
+    }
+   
+    return Msg.success();
+  }
+  
+  
+  /**
+   * 如果直接发送ajax=PUT请求
+   * 封装的数据除了路径上带的数据全是null
+   * 
+   * 问题：
+   * 请求体中有数据，
+   * 但是Employee对象封装不上
+   * 
+   * 原因：
+   * tomcat:
+   *    1.将请求体中的数据，封装成一个map,
+   *    2.request.getParameter("emName")就会从这个map中取值
+   *    3.SpringMVC封装POJO对象的时候，
+   *      会把POJO中每个属性值，request.getParamter("email");
+   * AJAX发送PUT请求引发的血案
+   *    PUT请求，请求体中的数据，request.getParamter("email")拿不到
+   *    Tomcat一看是put请求就不会封装请求体中的数据为mao,只有POST形式的请求才封装成map形式
+   *    
+   *    我们要能支持直接发送PUT之类的请求还要封装请求体中的数据
+   *    在web.xml配置过滤器HttpPutFormContentFilter即可解决
+   *    它的作用：将请求体中的数据解析包装成一个map
+   *    request被重新包装，request.getParameter()被重写，就会从自己封装的map中请求数据
+   *    
+   * 员工更新方法
+   * @param employee
+   * @return
+   */
+  @RequestMapping(value="/emp/{id}",method=RequestMethod.PUT)
+  @ResponseBody
+  public Msg saveEmp(Employee employee,@PathVariable("id")Integer id) {
+    employee.setEmpId(id);
+    //System.out.print("将要更新的员工数据："+employee);
+    employeeService.updateEmp(employee);
+    return Msg.success();
+  }
+  
+  /**
+   * 根据id查询员工
+   * @param id
+   * @return
+   */
   @RequestMapping(value="/emp/{id}",method=RequestMethod.GET)
   @ResponseBody
   public Msg getEmp(@PathVariable("id")Integer id) {
@@ -83,8 +152,8 @@ public class EmployeeController {
       Map<String, Object> map = new HashMap<String, Object>();
       List<FieldError> errors =  result.getFieldErrors();
       for(FieldError fieldError:errors) {
-        System.out.println("错误字段名："+fieldError.getField());
-        System.out.println("错误字段信息："+fieldError.getDefaultMessage());
+        //System.out.println("错误字段名："+fieldError.getField());
+        //System.out.println("错误字段信息："+fieldError.getDefaultMessage());
         map.put(fieldError.getField(),fieldError.getDefaultMessage());
       }
       return Msg.fail().add("errorFields", map);

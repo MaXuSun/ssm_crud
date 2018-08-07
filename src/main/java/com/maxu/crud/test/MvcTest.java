@@ -27,7 +27,7 @@ import com.maxu.crud.bean.Employee;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = {"classpath:applicationContext.xml",
-    "file:/src/main/webapp/WEB-INF/dispatcherServlet-servlet.xml"})
+    "classpath:spring-mvc.xml"})
 public class MvcTest {
   // 传入springmvc的ioc
   @Autowired

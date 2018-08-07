@@ -54,5 +54,32 @@ public class EmployeeService {
   public Employee getEmp(Integer id) {
     return employeeMapper.selectByPrimaryKey(id);
   }
+
+  /**
+   * 员工更新
+   * @param employee
+   */
+  public void updateEmp(Employee employee) {
+    employeeMapper.updateByPrimaryKeySelective(employee);
+  }
+
+  /**
+   * 员工单个删除
+   * @param id
+   */
+  public void deleteEmp(Integer id) {
+    employeeMapper.deleteByPrimaryKey(id);
+  }
+
+  /**
+   * 员工批量删除
+   * @param ids
+   */
+  public void deleteBatch(List<Integer> ids) {
+    EmployeeExample example = new EmployeeExample();
+    Criteria criteria = example.createCriteria();
+    criteria.andEmpIdIn(ids);
+    employeeMapper.deleteByExample(example);
+  }
   
 }

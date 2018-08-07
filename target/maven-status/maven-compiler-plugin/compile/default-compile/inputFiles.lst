@@ -1,1 +1,14 @@
-D:\eclipse\ssm-curd\src\main\java\com\maxu\crud\test\MBGTest.java
+D:\eclipse\ssm-crud\src\main\java\com\maxu\crud\bean\Msg.java
+D:\eclipse\ssm-crud\src\main\java\com\maxu\crud\controller\DepartmentController.java
+D:\eclipse\ssm-crud\src\main\java\com\maxu\crud\controller\EmployeeController.java
+D:\eclipse\ssm-crud\src\main\java\com\maxu\crud\test\MapperTest.java
+D:\eclipse\ssm-crud\src\main\java\com\maxu\crud\dao\EmployeeMapper.java
+D:\eclipse\ssm-crud\src\main\java\com\maxu\crud\test\MvcTest.java
+D:\eclipse\ssm-crud\src\main\java\com\maxu\crud\service\DepartmentService.java
+D:\eclipse\ssm-crud\src\main\java\com\maxu\crud\bean\Department.java
+D:\eclipse\ssm-crud\src\main\java\com\maxu\crud\bean\Employee.java
+D:\eclipse\ssm-crud\src\main\java\com\maxu\crud\service\EmployeeService.java
+D:\eclipse\ssm-crud\src\main\java\com\maxu\crud\bean\EmployeeExample.java
+D:\eclipse\ssm-crud\src\main\java\com\maxu\crud\dao\DepartmentMapper.java
+D:\eclipse\ssm-crud\src\main\java\com\maxu\crud\test\MBGTest.java
+D:\eclipse\ssm-crud\src\main\java\com\maxu\crud\bean\DepartmentExample.java
