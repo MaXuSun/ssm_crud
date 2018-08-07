@@ -1,0 +1,68 @@
+1.分页
+2.数据校验
+  jquery前端校验+JSR303后端校验
+3.ajax
+4.Rest风格的URI,使用HTTP协议请求方式的动词，来标识对资源的操作（get（查）,post（增）,put（改）,Delete（）删)
+
+基础框架：ssm
+数据库：MySQL
+前端框架：bootstrap
+项目依赖管理Maven
+分页-pagehelper
+逆向工程-MyBatis Generator
+
+基础环境搭建
+1.创建一个maven环境
+2.引入项目依赖的jar包
+  spring
+  springmvc
+  mybatis
+  数据库连接池，驱动包
+  其他jstl,servelt-api,junit
+3.引入bootstrap前端框架
+4.编写ssm整合的关键配置文件
+    .web.xml,spring,springmvc,mybatis,使用mybatis的逆行工程生成对应的bean以及mapper
+5.测试mapper
+
+查询（使用jsp直接发送页面）
+1.访问index.jsp
+2.index.jsp页面发送出查询员工列表请求 转为uri:/emps
+3.EmployeeController来接受请求，查出员工数据
+4.来到list.jsp页面进行展示    emps通过通知器返回的"list"被springmvc解析成list.jsp，然后展现
+局限性：由于客户端不同不太利于非pc端展现
+
+
+使用ajax查询
+1.index.jsp页面直接发送ajax请求进行员工分页数据的查询
+2.服务器将查出的数据，以json字符串的形式返回给浏览器
+3.浏览器收到js字符串。可以使用js对json进行解析，使用js通过dom增删改改变页面
+4.返回json.实现客户端的无关性
+
+新增-逻辑
+1.在Index.jsp页面点击“新增”
+2.弹出新增对话框
+3.去数据库查询部门对话框，显示在对话框中
+4.用户输入数据，进行校验后再保存
+  jquery前端校验，ajax用户名重复校验，重要数据（后端校验(jsr303)唯一约束）;
+
+URI
+/emp/{id}  GET 查询员工请求
+/emp  POST 保存员工
+/emp/{id} PUT 修改员工
+/emp/{id} DELETE 删除员工
+
+
+修改-逻辑
+1.点击编辑
+2.弹出用户修改模态框（显示用户信息）
+3.点击更新，完成用户的修改
+
+
+删除-逻辑
+1.单个删除
+   url:/emp/{id}    DELETE
+
+
+
+
+
